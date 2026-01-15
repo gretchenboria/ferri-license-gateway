@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferri Hardware Key - Activate Your License</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            color: white;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .license-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .license-label {
+            font-size: 0.875rem;
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+        }
+
+        .license-id {
+            font-family: 'Courier New', monospace;
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            font-size: 1rem;
+            transition: transform 0.1s;
+        }
+
+        .copy-btn:active {
+            transform: scale(0.98);
+        }
+
+        .steps {
+            margin-top: 2rem;
+        }
+
+        .step {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-weight: bold;
+            margin-right: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .copy-code {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            color: white;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            opacity: 0.7;
+            font-size: 0.875rem;
+        }
+
+        .error-msg {
+            background: rgba(244, 67, 54, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🦀</div>
+        <h1>Ferri Hardware Key</h1>
+        <p class="subtitle">Your license is ready to activate</p>
+
+        <div id="content">
+            <!-- Content will be injected by JavaScript -->
+        </div>
+
+        <div class="footer">
+            Ferri CLI - Hardware-Locked Secrets<br>
+            <a href="https://ferri.tools" style="color: white;">ferri.tools</a>
+        </div>
+    </div>
+
+    <script>
+        // Get license ID from URL - support both query param and hash
+        const params = new URLSearchParams(window.location.search);
+        const hash = window.location.hash.substring(1); // Remove #
+        let licenseId = params.get('id') || hash;
+
+        // Strip colons from tag UID (NFC Tools adds them)
+        if (licenseId) {
+            licenseId = licenseId.replace(/:/g, '').toUpperCase();
+        }
+
+        function copyToClipboard(text, msgId) {
+            navigator.clipboard.writeText(text).then(() => {
+                const msg = document.getElementById(msgId);
+                msg.style.display = 'block';
+                setTimeout(() => {
+                    msg.style.display = 'none';
+                }, 2000);
+            });
+        }
+
+        function renderContent() {
+            const contentDiv = document.getElementById('content');
+
+            if (!licenseId) {
+                contentDiv.innerHTML = `
+                    <div class="error-msg">
+                        <strong>No License ID Found</strong><br>
+                        Please scan a valid Ferri NFC tag
+                    </div>
+                `;
+                return;
+            }
+
+            // Build install script URL (same origin as this page)
+            const installUrl = window.location.origin + window.location.pathname.replace('index.html', '') + 'install.sh';
+
+            contentDiv.innerHTML = `
+                <div class="license-box">
+                    <div class="license-label">Your License Key:</div>
+                    <div class="license-id">${licenseId}</div>
+                    <button class="copy-btn" onclick="copyToClipboard('${licenseId}', 'msg-license')">
+                        Copy License Key
+                    </button>
+                    <div id="msg-license" style="display: none; margin-top: 0.5rem; text-align: center; background: rgba(76, 175, 80, 0.3); padding: 0.5rem; border-radius: 6px;">
+                        ✓ Copied!
+                    </div>
+                </div>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">1</span>
+                            Install Ferri on your Mac
+                        </div>
+                        <div class="code-block" onclick="copyToClipboard('curl -fsSL ${installUrl} | sh', 'msg-install')" style="cursor: pointer;">
+                            curl -fsSL ${installUrl} | sh
+                        </div>
+                        <div id="msg-install" style="display: none; margin-top: 0.5rem; text-align: center; background: rgba(76, 175, 80, 0.3); padding: 0.5rem; border-radius: 6px; font-size: 0.875rem;">
+                            ✓ Copied to clipboard!
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">2</span>
+                            Activate your license
+                        </div>
+                        <div class="code-block" onclick="copyToClipboard('ferri activate ${licenseId}', 'msg-activate')" style="cursor: pointer;">
+                            ferri activate ${licenseId}
+                        </div>
+                        <div id="msg-activate" style="display: none; margin-top: 0.5rem; text-align: center; background: rgba(76, 175, 80, 0.3); padding: 0.5rem; border-radius: 6px; font-size: 0.875rem;">
+                            ✓ Copied to clipboard!
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">3</span>
+                            Start using Ferri
+                        </div>
+                        <p style="margin-top: 0.5rem; opacity: 0.9; font-size: 0.875rem;">
+                            Your device is now bound to this hardware key. Store secrets, run workflows, and more!
+                        </p>
+                    </div>
+                </div>
+            `;
+        }
+
+        renderContent();
+    </script>
+</body>
+</html>

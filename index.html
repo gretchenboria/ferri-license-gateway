@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ferri Hardware Key - Activate Your License</title>
+    <title>ferriByte Hardware Key - Activate Your License</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #CE422B 0%, #8B4513 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -79,7 +79,7 @@
 
         .copy-btn {
             background: white;
-            color: #667eea;
+            color: #CE422B;
             border: none;
             padding: 0.75rem 1.5rem;
             border-radius: 8px;
@@ -109,7 +109,7 @@
         .step-number {
             display: inline-block;
             background: white;
-            color: #667eea;
+            color: #CE422B;
             width: 24px;
             height: 24px;
             border-radius: 50%;
@@ -168,7 +168,7 @@
 <body>
     <div class="container">
         <div class="logo">🦀</div>
-        <h1>Ferri Hardware Key</h1>
+        <h1>ferriByte Hardware Key</h1>
         <p class="subtitle">Your license is ready to activate</p>
 
         <div id="content">
@@ -176,8 +176,8 @@
         </div>
 
         <div class="footer">
-            Ferri CLI - Hardware-Locked Secrets<br>
-            <a href="https://ferri.tools" style="color: white;">ferri.tools</a>
+            ferriByte - Hardware-Locked Secrets<br>
+            <a href="https://ferribyte.com" style="color: white;">ferribyte.com</a>
         </div>
     </div>
 
@@ -209,7 +209,7 @@
                 contentDiv.innerHTML = `
                     <div class="error-msg">
                         <strong>No License ID Found</strong><br>
-                        Please scan a valid Ferri NFC tag
+                        Please scan a valid ferriByte NFC tag
                     </div>
                 `;
                 return;
@@ -234,7 +234,7 @@
                     <div class="step">
                         <div class="step-title">
                             <span class="step-number">1</span>
-                            Install Ferri on your Mac
+                            Install ferriByte on your Mac
                         </div>
                         <div class="code-block" onclick="copyToClipboard('curl -fsSL ${installUrl} | sh', 'msg-install')" style="cursor: pointer;">
                             curl -fsSL ${installUrl} | sh
@@ -260,7 +260,7 @@
                     <div class="step">
                         <div class="step-title">
                             <span class="step-number">3</span>
-                            Start using Ferri
+                            Start using ferriByte
                         </div>
                         <p style="margin-top: 0.5rem; opacity: 0.9; font-size: 0.875rem;">
                             Your device is now bound to this hardware key. Store secrets, run workflows, and more!
